@@ -34,5 +34,5 @@ GoConference is a simple and efficient ticket booking application written in Go.
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/meenakshi3151/Ticketi.git
    
