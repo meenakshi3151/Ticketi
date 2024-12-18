@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"Booking-App/helper" //we need to import package from other package if needed
 )
 
 // Greet users and introduce the conference
@@ -27,62 +28,24 @@ func collectUserInfo(firstName *string, lastName *string, email *string, city *s
 	fmt.Scan(firstName)
 	fmt.Print("Enter your last name: ")
 	fmt.Scan(lastName)
-	if !validateName(*firstName, *lastName) {
+	if !helper.ValidateName(*firstName, *lastName) {
 		return
 	}
 
 	fmt.Print("Enter your email address: ")
 	fmt.Scan(email)
-	if !validateEmail(*email) {
+	if !helper.ValidateEmail(*email) {
 		return
 	}
 
 	fmt.Print("Enter the number of tickets you'd like to book: ")
 	fmt.Scan(ticketsToBook)
-	if !validateTicketsToBook(*ticketsToBook) || !checkAvailabilityOfTickets(*ticketsToBook, remainingTickets) {
+	if !helper.ValidateTicketsToBook(*ticketsToBook) || !helper.CheckAvailabilityOfTickets(*ticketsToBook, remainingTickets) {
 		return
 	}
 
 	fmt.Print("Enter your city: ")
 	fmt.Scan(city)
-}
-
-// Validate the user's name
-func validateName(firstName string, lastName string) bool {
-	isValidName := len(firstName) > 2 && len(lastName) > 2
-	if !isValidName {
-		fmt.Println("Please enter a valid name with at least 2 characters.")
-		return false
-	}
-	return true
-}
-
-// Validate the user's email
-func validateEmail(email string) bool {
-	isValidEmail := strings.Contains(email, "@gmail.com")
-	if !isValidEmail {
-		fmt.Println("Please enter a valid Gmail address.")
-		return false
-	}
-	return true
-}
-
-// Validate the number of tickets to book
-func validateTicketsToBook(ticketsToBook uint) bool {
-	if ticketsToBook <= 0 {
-		fmt.Println("Please enter a positive number of tickets.")
-		return false
-	}
-	return true
-}
-
-// Check if enough tickets are available
-func checkAvailabilityOfTickets(ticketsToBook uint, remainingTickets uint) bool {
-	if ticketsToBook > remainingTickets {
-		fmt.Printf("Sorry, we only have %v tickets left. Please try again.\n", remainingTickets)
-		return false
-	}
-	return true
 }
 
 // Update ticket counts after a successful booking
