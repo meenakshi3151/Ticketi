@@ -6,7 +6,11 @@ import (
 	"Booking-App/helper" //we need to import package from other package if needed
 )
 
+// everything here is single thread execution 
+// concurrency is cheap in Go
+// we can continue booking for other users as well
 // Greet users and introduce the conference
+
 func greetUsers(conferenceName string) {
 	fmt.Printf("Welcome to the %v booking application!\n", conferenceName)
 }
@@ -63,6 +67,7 @@ func storeBookingDetails(firstName, lastName string, bookingsList *[]string) {
 // Print a confirmation message after booking
 func printConfirmationMessage(firstName, lastName string, ticketsToBook uint, email string, remainingTickets uint) {
 	fmt.Printf("Thank you %v %v for booking %v tickets. A confirmation email will be sent to %v.\n", firstName, lastName, ticketsToBook, email)
+	go sendTickts(ticketsToBook,firstName,lastName,email)
 	fmt.Printf("Tickets remaining: %v\n", remainingTickets)
 }
 
@@ -121,6 +126,7 @@ func handleCityChoice(city *string) {
 // Main booking logic
 func bookTickets(remainingTickets *uint, bookingsList *[]string, bookedTickets *int) {
 	for *remainingTickets > 0 && len(*bookingsList) < 50 {
+		fmt.Println("------------------------------------------------")
 		displayCurrentTicketsInfo(*remainingTickets, *bookedTickets)
 
 		// Collect user details
@@ -153,6 +159,11 @@ func bookTickets(remainingTickets *uint, bookingsList *[]string, bookedTickets *
 	}
 }
 
+func sendTickts(userTickets uint,firstName string, lastName string,email string) {
+   var ticket = fmt.Sprintf("%v tickets for %v %v",userTickets,firstName,lastName)
+    fmt.Printf("Sending ticket %v to email %v\n",ticket,email)
+}
+
 func main() {
 	// Conference details
 	var conferenceName = "GoConference"
@@ -167,4 +178,5 @@ func main() {
 	greetUsers(conferenceName)
 	initialTicketInfo(totalTickets, remainingTickets)
 	bookTickets(&remainingTickets, &bookingsList, &bookedTickets)
+
 }
